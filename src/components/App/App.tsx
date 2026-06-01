@@ -1,7 +1,7 @@
 import fetchMovies from "../../services/movieService";
 import SearchBar from "../SearchBar/SearchBar";
-import { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useEffect, useState } from "react";
 import type { Movie } from "../../types/movie";
 import MovieGrid from "../MovieGrid/MovieGrid";
 import MovieModal from "../MovieModal/MovieModal";
@@ -48,6 +48,12 @@ function App() {
 
   const movies = data?.results ?? [];
   const totalPages = data?.total_pages ?? 0;
+
+  useEffect(() => {
+    if (isSuccess && !movies.length) {
+      toast.error("No movies found for your request.");
+    }
+  }, [isSuccess, movies.length]);
 
   return (
     <>
